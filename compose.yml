@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+
+  pg13:
+    container_name: pg13
+    image: postgres:13.3
+    ports:
+      - 5432
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=klix
+    networks:
+      klixnw:
+        ipv4_address: 172.99.99.100
+    volumes:
+      - "~/klix/data:/var/lib/postgresql/data"
+
+  aggregator:
+    container_name: aggregator
+    image: aggregator:latest
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_HIKARI_USERNAME=postgres
+      - SPRING_DATASOURCE_HIKARI_PASSWORD=klix
+      - SPRING_DATASOURCE_HIKARI_JDBC-URL=jdbc:postgresql://pg13:5432/klix?currentSchema=applications
+    networks:
+      klixnw:
+        ipv4_address: 172.99.99.101
+    volumes:
+      - "~/klix/logs/aggregator:/usr/web/app/logs/"
+    depends_on:
+      - pg13
+      
+  client:
+    container_name: client
+    image: client:latest
+    ports:
+      - 8080
+    restart: unless-stopped
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SERVICE_AGGREGATOR_URL=http://aggregator:8090
+    networks:
+      klixnw:
+        ipv4_address: 172.99.99.102
+    volumes:
+      - "~/klix/logs/client:/usr/web/app/logs/"
+    depends_on:
+      - aggregator
+
+networks:
+  klixnw:
+    external: true
+    name: klixnw
+

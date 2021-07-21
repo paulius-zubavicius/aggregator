@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="layout :: body('Offers review', ~{:: .content}, ~{:: .headers}, ~{:: .menu})">
+<body>
+
+	<th:block class="headers">
+		<meta http-equiv="refresh" th:content="${@refreshInterval}"
+			th:if="${data.waitingForResponse}">
+		<style>
+table {
+	border-collapse: collapse;
+}
+
+td, th {
+	padding: 10px;
+	border-bottom: 2px solid #8ebf42;
+}
+</style>
+	</th:block>
+
+	<th:block class="menu">
+		<a th:href="@{/}">[Create new loan request]</a>
+	</th:block>
+
+	<th:block class="content">
+
+		<div>
+			<b>Requested: </b><span th:text="${{data.created}}"></span>
+		</div>
+		<div>
+			<b>Amount: </b><span th:text="${data.request.amount}"></span>
+		</div>
+		<div>
+			<b>Email / Phone: </b><span
+				th:text="|${data.request.email} / ${data.request.phone}|"></span>
+		</div>
+		<div>
+			<b>Income / Expenses: </b><span
+				th:text="|${data.request.monthlyIncome} / ${data.request.monthlyExpenses}|"></span>
+		</div>
+		<div>
+			<b>Marital status / Dependents: </b><span
+				th:text="|${data.request.maritalStatus} / ${data.request.dependents}|"></span>
+		</div>
+		<div>
+			<b>Agree to be scored / published: </b><span
+				th:text="${data.request.agreeToBeScored ? 'Yes' : 'No'} "></span>
+		</div>
+		<br />
+		<table>
+			<thead>
+				<tr>
+					<th>Bank name</th>
+					<th>Status</th>
+					<th>Annual rate</th>
+					<th>Monthly payment</th>
+					<th>Number of payments</th>
+					<th>Total repayment</th>
+					<th>First repayment</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="offer : ${data.offers}">
+					<td th:text="${offer.bank}"></td>
+					<td th:text="${offer.status}"></td>
+					<td th:text="${offer.annualPercentageRate}"></td>
+					<td th:text="${offer.monthlyPaymentAmount}"></td>
+					<td th:text="${offer.numberOfPayments}"></td>
+					<td th:text="${offer.totalRepaymentAmount}"></td>
+					<td th:text="${offer.firstRepaymentDate}"></td>
+				</tr>
+
+			</tbody>
+		</table>
+
+		<div th:if="${data.waitingForResponse}">
+			<p style="color: orange;">Waiting for all responses...</p>
+		</div>
+
+	</th:block>
+</body>
+</html>
+

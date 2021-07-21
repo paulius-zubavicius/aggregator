@@ -1,0 +1,42 @@
+
+server:
+  port: 8090
+
+spring:
+  application:
+    name: aggregator
+  profiles:
+    active:
+    - dev
+  datasource:
+    hikari:
+      username: postgres
+      password: klix
+      driver-class-name: org.postgresql.Driver
+      jdbc-url: jdbc:postgresql://localhost:5432/klix?currentSchema=applications
+  jpa: 
+    hibernate:
+       ddl-auto: validate
+       naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+    properties:
+       hibernate.dialect : org.hibernate.dialect.PostgreSQL94Dialect
+       hibernate.default_schema : applications
+       hibernate.globally_quoted_identifiers : true
+       
+       
+banks:
+  cron: 0/15 * * * * *
+  config:
+    FastBank:
+      url: https://shop.stage.klix.app:443/api/FastBank/applications
+      phoneNumberRegexp: \+371[0-9]{8}
+      phoneNumberExamples: "+37100000000"
+    SolidBank:
+      url: https://shop.stage.klix.app:443/api/SolidBank/applications
+      phoneNumberRegexp: \+[0-9]{11,15}
+      phoneNumberExamples: "+00000000000 .. +000000000000000"
+      
+
+

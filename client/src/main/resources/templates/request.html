@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="layout :: body('Create request', ~{:: .content}, ~{}, ~{})">
+<body>
+
+	<th:block class="content">
+
+		<div th:if=${err}>
+			<h3>Validation errors! :</h3>
+			<ul>
+				<li th:each="e : ${err.errors}"><b th:if="${e.field}"
+					th:text="${e.field}"></b>: <span th:text="${e.msg}"></span></li>
+			</ul>
+		</div>
+
+
+		<form th:action="@{/}" th:object="${lreq}" method="POST">
+			<div>
+				<label for="phone">Phone</label> <input type="text" id="phone"
+					name="phone" th:value="${lreq.phone}" />
+			</div>
+			<div>
+				<label for="email">Email</label> <input type="text" id="email"
+					name="email" th:value="${lreq.email}" />
+			</div>
+			<div>
+				<label for="monthlyIncome">Monthly income</label> <input
+					type="number" id="monthlyIncome" name="monthlyIncome"
+					th:value="${lreq.monthlyIncome}" min="0" step="0.01" />
+			</div>
+			<div>
+				<label for="monthlyExpenses">Monthly expenses</label> <input
+					type="number" id="monthlyExpenses" name="monthlyExpenses"
+					th:value="${lreq.monthlyExpenses}" min="0" step="0.01" />
+			</div>
+			<div>
+				<label for="maritalStatus">Marital status</label> <select
+					name="maritalStatus" id="maritalStatus">
+					<option
+						th:each="s : ${T(com.klix.client.model.MaritalStatus).values}"
+						th:value="${s}" th:selected="${lreq.maritalStatus} eq ${s}"
+						th:text="${s}"></option>
+				</select>
+			</div>
+			<div>
+				<label for="dependents">Dependents</label> <input type="number"
+					id="dependents" name="dependents" th:value="${lreq.dependents}"
+					min="0" step="1" />
+			</div>
+			<div>
+				<label for="agreeToBeScored">Agree to be scored</label> <select
+					name="agreeToBeScored" id="agreeToBeScored">
+					<option value="TRUE" th:selected="${lreq.agreeToBeScored}"
+						th:text="Agree"></option>
+					<option value="FALSE" th:selected="not ${lreq.agreeToBeScored}"
+						th:text="Disagree"></option>
+				</select>
+			</div>
+			<div>
+				<label for="amount">Amount</label> <input type="number" id="amount"
+					name="amount" th:value="${lreq.amount}" min="0" step="0.01" />
+			</div>
+
+			<input type="submit">
+		</form>
+
+	</th:block>
+
+</body>
+
+</html>
+

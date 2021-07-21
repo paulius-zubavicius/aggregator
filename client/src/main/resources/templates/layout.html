@@ -1,0 +1,21 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:fragment="body(title, content, headers, menu)">
+<head>
+<title>Client for aggregator service</title>
+<link rel="icon" href="http://icons.iconarchive.com/icons/graphicloads/polygon/256/bank-icon.png">
+<meta th:if="${headers}" th:replace="${headers}"></meta>
+</head>
+<body>
+	<header>
+		<h3 th:text="${title}"></h3>
+		
+		<section th:if="${menu}" th:replace="${menu}"></section>
+		<hr>
+	</header>
+	<section th:replace="${content}"></section>
+	<footer>
+		<hr />
+	</footer>
+</body>
+</html>

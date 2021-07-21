@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body th:replace="layout :: body('Error occurred', ~{:: .content}, ~{}, ~{})">
+
+	<th:block class="content">
+
+		<h1 th:if="${err.code} eq 404">Resource not found 404</h1>
+		<h1 th:if="${err.code} eq 400">Request containing not valid data</h1>
+
+		<h3 th:if="${err.errorId}">Error Id: [[${err.errorId}]]</h3>
+
+		<ul>
+			<li th:each="e : ${err.errors}"><b th:if="${e.field}"
+				th:text="${e.field}"></b>: <span th:text="${e.msg}"></span></li>
+		</ul>
+
+	</th:block>
+
+</body>
+
+</html>

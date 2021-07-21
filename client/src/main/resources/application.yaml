@@ -1,0 +1,11 @@
+
+spring:
+  application:
+    name: client
+  profiles:
+    active:
+    - dev
+ 
+       
+service.aggregator.url: http://localhost:8090
+refresh.interval: 5
